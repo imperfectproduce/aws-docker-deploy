@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Download template
+curl -LSso Dockerrun.aws.json.template https://raw.githubusercontent.com/relayfoods/aws-docker-deploy/68985924eeb2effb0685de1cb26c72ad32ce398d/Dockerrun.aws.json.template
+
 # Set vars that typically do not vary by app
 BRANCH=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)
 SHA1=$(git rev-parse HEAD)
@@ -43,3 +46,4 @@ aws elasticbeanstalk update-environment --environment-name $EB_ENV_NAME \
 rm $ZIP
 rm Dockerrun.aws.json
 rm Dockerrun.aws.json.bak
+rm Dockerrun.aws.json.template
