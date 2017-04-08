@@ -19,3 +19,5 @@ Create a project specific deploy script like the following
 
     # clean up
     rm Dockerrun.aws.json.template
+
+Credit to https://gist.github.com/yefim/93fb5aa3291b3843353794127804976f for original inspiration / code reference.
