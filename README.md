@@ -14,15 +14,19 @@ Assumes us-east-1 region
 
 Create a project specific deploy script like the following
 
+    # e.g. project-specific build script to prepare artifacts needed by Dockerfile 
+    ./build.sh
+    
     # project-specific environment variables
     NAME=container-name
     AWS_ACCOUNT_ID=1234567890
     EB_BUCKET=elasticbeanstalk-us-east-1-1234567890 
-    EB_APP_NAME=eb-app-name
+    EB_APP_NAME="EB App Name"
     EB_ENV_NAME=eb-env-name
+    CONTAINER_PORT=80
     
     # download and execute deploy.sh in the current shell
-    eval "$(curl -s -L https://raw.githubusercontent.com/relayfoods/aws-docker-deploy/41f9dc7d35353b5731153c6f4d592ca966945d51/deploy.sh)"
+    eval "$(curl -s -L https://raw.githubusercontent.com/relayfoods/aws-docker-deploy/409556fa08ef102890debfec1883e7144375b2e9/deploy.sh)"
     
 Note the revision specific curl sources, see https://help.github.com/articles/getting-permanent-links-to-files/
 
