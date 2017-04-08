@@ -3,7 +3,7 @@ Scripts and templates for deploying docker containers to aws / elastic beanstalk
 
 Assumes us-east-1 region
 
-Create a project specific deploy script like the following 
+Create a project specific deploy script like the following
 
     # project-specific environment variables
     NAME=container-name
@@ -19,5 +19,7 @@ Create a project specific deploy script like the following
 
     # clean up
     rm Dockerrun.aws.json.template
+    
+Note the revision specific curl sources, see https://help.github.com/articles/getting-permanent-links-to-files/
 
 Credit to https://gist.github.com/yefim/93fb5aa3291b3843353794127804976f for original inspiration / code reference.
