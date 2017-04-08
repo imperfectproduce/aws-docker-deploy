@@ -35,7 +35,7 @@ zip -r $ZIP Dockerrun.aws.json
 aws s3 cp $ZIP s3://$EB_BUCKET/$ZIP
 
 # Create a new application version with the zipped up Dockerrun file
-aws elasticbeanstalk create-application-version --application-name $EB_APP_NAME \
+aws elasticbeanstalk create-application-version --application-name "$EB_APP_NAME" \
     --version-label $VERSION --description "$DESCRIPTION" --source-bundle S3Bucket=$EB_BUCKET,S3Key=$ZIP
 
 # Update the environment to use the new application version
