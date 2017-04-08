@@ -22,12 +22,11 @@ docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$NAME:$VERSION
 
 # Copy template Dockerrun.aws.json and replace template vars
 cp Dockerrun.aws.json.template Dockerrun.aws.json
-# Replace the <AWS_ACCOUNT_ID> with the real ID
+# Replace the template values
 sed -i.bak "s/<AWS_ACCOUNT_ID>/$AWS_ACCOUNT_ID/" Dockerrun.aws.json
-# Replace the <NAME> with the real name
 sed -i.bak "s/<NAME>/$NAME/" Dockerrun.aws.json
-# Replace the <TAG> with the real version number
 sed -i.bak "s/<TAG>/$VERSION/" Dockerrun.aws.json
+sed -i.bak "s/<CONTAINER_PORT>/$CONTAINER_PORT/" Dockerrun.aws.json
 
 # Zip up the Dockerrun file (feel free to zip up an .ebextensions directory with it)
 zip -r $ZIP Dockerrun.aws.json
