@@ -1,5 +1,14 @@
 # aws-docker-deploy
-Scripts and templates for deploying docker containers to aws / elastic beanstalk
+Scripts and templates for deploying docker containers to aws / elastic beanstalk ("Single Container" style with [v1 Dockerrun.aws.json](http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create_deploy_docker_image.html#create_deploy_docker_image_dockerrun)).
+
+The script does the following
+
+- Builds the docker image
+- Uploads the docker image to ECR
+- Creates and uploads new beanstalk application version to S3
+- Deploys new beanstalk version to target environment
+
+The docker image is tagged with `<branch name>-<commit hash>-<timestamp>` which is also used as the beanstalk application version.
 
 Assumes us-east-1 region
 
@@ -12,13 +21,8 @@ Create a project specific deploy script like the following
     EB_APP_NAME=eb-app-name
     EB_ENV_NAME=eb-env-name
     
-    # download Dockerrun.aws.json.template
-    curl -LSso Dockerrun.aws.json.template https://raw.githubusercontent.com/relayfoods/aws-docker-deploy/68985924eeb2effb0685de1cb26c72ad32ce398d/Dockerrun.aws.json.template
     # download and execute deploy.sh in the current shell
-    eval "$(curl -s -L https://raw.githubusercontent.com/relayfoods/aws-docker-deploy/68985924eeb2effb0685de1cb26c72ad32ce398d/deploy.sh)"
-
-    # clean up
-    rm Dockerrun.aws.json.template
+    eval "$(curl -s -L https://raw.githubusercontent.com/relayfoods/aws-docker-deploy/41f9dc7d35353b5731153c6f4d592ca966945d51/deploy.sh)"
     
 Note the revision specific curl sources, see https://help.github.com/articles/getting-permanent-links-to-files/
 
