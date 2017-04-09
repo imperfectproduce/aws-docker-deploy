@@ -30,4 +30,4 @@ Create a project specific deploy script like the following
     
 Note the revision specific curl sources, see https://help.github.com/articles/getting-permanent-links-to-files/
 
-Credit to https://gist.github.com/yefim/93fb5aa3291b3843353794127804976f for original inspiration / code reference.
+Credit to [Yefim Vedernikoff](https://gist.github.com/yefim) for [original inspiration / code reference](https://gist.github.com/yefim/93fb5aa3291b3843353794127804976f).
