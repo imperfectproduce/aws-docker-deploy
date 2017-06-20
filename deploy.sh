@@ -10,20 +10,22 @@ VERSION=$BRANCH-$SHA1-$(date +%s)
 DESCRIPTION=$(git log -1 --pretty=%B)
 ZIP=$VERSION.zip
 
-aws configure set default.region us-east-1
+aws configure set default.region $AWS_REGION
 
 # Authenticate against our Docker registry
-eval $(aws ecr get-login)
+eval $(aws ecr get-login --region $AWS_REGION)
 
 # Build and push the image
 docker build -t $NAME:$VERSION .
-docker tag $NAME:$VERSION $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$NAME:$VERSION
-docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$NAME:$VERSION
+docker tag $NAME:$VERSION $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$NAME:$VERSION
+docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$NAME:$VERSION
 
 # Copy template Dockerrun.aws.json and replace template vars
 cp Dockerrun.aws.json.template Dockerrun.aws.json
+
 # Replace the template values
 sed -i.bak "s/<AWS_ACCOUNT_ID>/$AWS_ACCOUNT_ID/" Dockerrun.aws.json
+sed -i.bak "s/<AWS_REGION>/$AWS_REGION/" Dockerrun.aws.json
 sed -i.bak "s/<NAME>/$NAME/" Dockerrun.aws.json
 sed -i.bak "s/<TAG>/$VERSION/" Dockerrun.aws.json
 sed -i.bak "s/<CONTAINER_PORT>/$CONTAINER_PORT/" Dockerrun.aws.json

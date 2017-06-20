@@ -10,8 +10,6 @@ The script does the following
 
 The docker image is tagged with `<branch name>-<commit hash>-<timestamp>` which is also used as the beanstalk application version.
 
-Assumes us-east-1 region
-
 Create a project specific deploy script like the following
 
     # e.g. project-specific build script to prepare artifacts needed by Dockerfile 
@@ -24,6 +22,7 @@ Create a project specific deploy script like the following
     EB_APP_NAME="EB App Name"
     EB_ENV_NAME=eb-env-name
     CONTAINER_PORT=80
+    AWS_REGION=us-east-1
     
     # download and execute deploy.sh in the current shell
     eval "$(curl -s -L https://raw.githubusercontent.com/relayfoods/aws-docker-deploy/409556fa08ef102890debfec1883e7144375b2e9/deploy.sh)"
