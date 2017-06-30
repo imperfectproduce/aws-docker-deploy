@@ -8,6 +8,7 @@ BRANCH=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)
 SHA1=$(git rev-parse HEAD)
 VERSION=$BRANCH-$SHA1-$(date +%s)
 DESCRIPTION=$(git log -1 --pretty=%B)
+DESCRIPTION=${DESCRIPTION:0:180} # truncate to 180 chars - max beanstalk version description is 200
 ZIP=$VERSION.zip
 
 aws configure set default.region $AWS_REGION
