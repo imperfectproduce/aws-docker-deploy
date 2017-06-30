@@ -12,17 +12,17 @@ The docker image is tagged with `<branch name>-<commit hash>-<timestamp>` which 
 
 Create a project specific deploy script like the following
 
-    # e.g. project-specific build script to prepare artifacts needed by Dockerfile 
+    # e.g. (optional) project-specific build script to prepare artifacts needed by Dockerfile 
     ./build.sh
     
     # project-specific environment variables
     NAME=container-name
     AWS_ACCOUNT_ID=1234567890
+    AWS_REGION=us-east-1
     EB_BUCKET=elasticbeanstalk-us-east-1-1234567890 
     EB_APP_NAME="EB App Name"
     EB_ENV_NAME=eb-env-name
     CONTAINER_PORT=80
-    AWS_REGION=us-east-1
     
     # download and execute deploy.sh in the current shell
     eval "$(curl -s -L https://raw.githubusercontent.com/relayfoods/aws-docker-deploy/80420f43f1657e501b4636e4dfe9072148d72879/deploy.sh)"
