@@ -25,7 +25,7 @@ Create a project specific deploy script like the following
     AWS_REGION=us-east-1
     
     # download and execute deploy.sh in the current shell
-    eval "$(curl -s -L https://github.com/relayfoods/aws-docker-deploy/blob/3ede9d81a969eae0e6ba7561df2ad233d2e7c528/deploy.sh)"
+    eval "$(curl -s -L https://raw.githubusercontent.com/relayfoods/aws-docker-deploy/80420f43f1657e501b4636e4dfe9072148d72879/deploy.sh)"
     
 Note the revision specific curl sources, see https://help.github.com/articles/getting-permanent-links-to-files/
 
