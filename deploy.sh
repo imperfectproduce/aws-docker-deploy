@@ -14,7 +14,7 @@ ZIP=$VERSION.zip
 aws configure set default.region $AWS_REGION
 
 # Authenticate against our Docker registry
-eval $(aws ecr get-login --region $AWS_REGION)
+eval $(aws ecr get-login --region $AWS_REGION | sed "s/-e none //")
 
 # Build and push the image
 docker build -t $NAME:$VERSION .
