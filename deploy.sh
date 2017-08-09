@@ -41,8 +41,12 @@ aws elasticbeanstalk create-application-version --application-name "$EB_APP_NAME
     --version-label $VERSION --description "$DESCRIPTION" --source-bundle S3Bucket=$EB_BUCKET,S3Key=$ZIP
 
 # Update the environment to use the new application version
-aws elasticbeanstalk update-environment --environment-name $EB_ENV_NAME \
-    --version-label $VERSION
+if [ -z "$EB_ENV_NAME" ]; then
+    echo "EB_ENV_NAME is not set, skipping deployment step"
+else
+    aws elasticbeanstalk update-environment --environment-name $EB_ENV_NAME \
+        --version-label $VERSION
+fi
 
 # Clean up
 rm $ZIP
