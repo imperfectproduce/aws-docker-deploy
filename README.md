@@ -21,11 +21,12 @@ Create a project specific deploy script like the following
     AWS_REGION=us-east-1
     EB_BUCKET=elasticbeanstalk-us-east-1-1234567890 
     EB_APP_NAME="EB App Name"
+    # optional beanstalk environment name; if omitted then no environment update command will be sent
     EB_ENV_NAME=eb-env-name
     CONTAINER_PORT=80
     
     # download and execute deploy.sh in the current shell
-    eval "$(curl -s -L https://raw.githubusercontent.com/relayfoods/aws-docker-deploy/980423ec96531318d1789b74e9dcc61d3a774f4a/deploy.sh)"
+    eval "$(curl -s -L https://raw.githubusercontent.com/relayfoods/aws-docker-deploy/b57c13978076bf1617d65f35018eae16dbd650b0/deploy.sh)"
     
 Note the revision specific curl sources, see https://help.github.com/articles/getting-permanent-links-to-files/
 
