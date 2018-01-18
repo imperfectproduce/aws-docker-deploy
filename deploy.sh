@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Download template
-curl -LSso Dockerrun.aws.json.template https://raw.githubusercontent.com/relayfoods/aws-docker-deploy/346c62fe58c70d66c7d43c4a8f25ab7c67374f6e/Dockerrun.aws.json.template
+curl -LSso Dockerrun.aws.json.template https://raw.githubusercontent.com/imperfectproduce/aws-docker-deploy/c13ffa2eda068d5d4eee93ce498d1340f72a529c/Dockerrun.aws.json.template
 
 # Set vars that typically do not vary by app
 BRANCH=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)
