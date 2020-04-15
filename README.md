@@ -26,7 +26,7 @@ Create a project specific deploy script like the following
     CONTAINER_PORT=80
     
     # download and execute deploy.sh in the current shell
-    eval "$(curl -s -L https://raw.githubusercontent.com/imperfectproduce/aws-docker-deploy/64aa6aecad4dbc04fad89f5982e6ac810a8743e9/deploy.sh)"
+    eval "$(curl -s -L https://raw.githubusercontent.com/imperfectproduce/aws-docker-deploy/d72ecd282c91f204be11840f0b58aa0b46ee0ccf/deploy.sh)"
     
 Note the revision specific curl sources, see https://help.github.com/articles/getting-permanent-links-to-files/
 
