@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # Download template
 curl -LSso Dockerrun.aws.json.template https://raw.githubusercontent.com/imperfectproduce/aws-docker-deploy/c13ffa2eda068d5d4eee93ce498d1340f72a529c/Dockerrun.aws.json.template
@@ -34,7 +35,7 @@ sed -i.bak "s/<CONTAINER_PORT>/$CONTAINER_PORT/" Dockerrun.aws.json
 # Zip up the Dockerrun file (feel free to zip up an .ebextensions directory with it)
 if [ -d ".ebextensions" ]; then
    zip -r $ZIP Dockerrun.aws.json .ebextensions
-else 
+else
    zip -r $ZIP Dockerrun.aws.json
 fi
 
