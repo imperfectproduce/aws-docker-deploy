@@ -49,8 +49,10 @@ aws elasticbeanstalk create-application-version --application-name "$EB_APP_NAME
 if [ -z "$EB_ENV_NAME" ]; then
     echo "EB_ENV_NAME is not set, skipping deployment step"
 else
-    aws elasticbeanstalk update-environment --environment-name $EB_ENV_NAME \
+  for env in ${EB_ENV_NAME[@]}; do
+    aws elasticbeanstalk update-environment --environment-name $env \
         --version-label $VERSION
+  done
 fi
 
 # Clean up
