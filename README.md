@@ -25,6 +25,8 @@ Create a project specific deploy script like the following
     # may also be provided as an array for multiple environment updates
     EB_ENV_NAME=eb-env-name
     CONTAINER_PORT=80
+    # optional flag to poll for success after deployment; if omitted then polling is not performed
+    DEPLOY_POLLING=true
 
     # download and execute deploy.sh in the current shell
     eval "$(curl -s -L https://raw.githubusercontent.com/imperfectproduce/aws-docker-deploy/d72ecd282c91f204be11840f0b58aa0b46ee0ccf/deploy.sh)"
