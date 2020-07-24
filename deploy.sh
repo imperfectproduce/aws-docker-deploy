@@ -5,7 +5,7 @@ set -e
 curl -LSso Dockerrun.aws.json.template https://raw.githubusercontent.com/imperfectproduce/aws-docker-deploy/c13ffa2eda068d5d4eee93ce498d1340f72a529c/Dockerrun.aws.json.template
 
 # Set vars that typically do not vary by app
-BRANCH=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)
+BRANCH=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD | sed 's/[^A-Za-z0-9_\.-]/--/g' | head -c100)
 SHA1=$(git rev-parse --short HEAD)
 VERSION=$BRANCH-$SHA1-$(date +%s)
 DESCRIPTION=$(git log -1 --pretty=%B)
