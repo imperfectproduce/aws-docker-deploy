@@ -45,16 +45,48 @@ aws s3 cp $ZIP s3://$EB_BUCKET/$ZIP
 aws elasticbeanstalk create-application-version --application-name "$EB_APP_NAME" \
     --version-label $VERSION --description "$DESCRIPTION" --source-bundle S3Bucket=$EB_BUCKET,S3Key=$ZIP
 
+function get_events() {
+  local env_name="${1}"
+  local start_time="${2}"
+  echo $(aws elasticbeanstalk describe-events \
+    --environment-name $env_name --start-time $start_time \
+    --query="sort_by(Events, &EventDate)")
+}
+
+function echo_new_events() {
+  local env_name="${1}"
+  local start_time="${2}"
+  if [ -z "$EVENTS" ]; then
+    EVENTS=$(get_events $env_name $start_time)
+    echo "$EVENTS" | jq 'del(.. | .ApplicationName?, .RequestId?)'
+  else
+    CURRENT_EVENTS=$(get_events $env_name $start_time)
+    EVENT_ARRAY_DIFF=$(jq -n --argjson CURRENT_EVENTS "$CURRENT_EVENTS" \
+      --argjson EVENTS "$EVENTS" \
+      '{"new": $CURRENT_EVENTS, "old": $EVENTS} | .new-.old')
+    if [ "$EVENT_ARRAY_DIFF" != "[]" ]; then
+      echo "$EVENT_ARRAY_DIFF" | jq 'del(.. | .ApplicationName?, .RequestId?)'
+    fi
+    EVENTS=$CURRENT_EVENTS
+  fi
+}
+
 function env_update_in_progress() {
+  local env_name="${1}"
+  local status_type="${2}"
+  local desired_status="${3}"
+  local start_time="${4}"
   STATUS=$(aws elasticbeanstalk describe-environment-health \
-    --environment-name $1 --attribute-names HealthStatus \
-    --query="HealthStatus" --output text)
-  echo "Environment Health is "
-  echo $STATUS
-  if [[ "$STATUS" != "Ok" ]]; then
+    --environment-name $env_name --attribute-names $status_type \
+    --query="$status_type" --output text)
+  if [ "$STATUS" != "$OLD_STATUS" ]; then
+    echo "Environment $status_type is $STATUS"
+    OLD_STATUS=$STATUS
+  fi
+  echo_new_events $env_name $start_time
+  if [[ "$STATUS" != $desired_status ]]; then
     return 0
   else
-    echo "Environment update complete"
     return 1
   fi
 }
@@ -63,13 +95,19 @@ function env_update_in_progress() {
 if [ -z "$EB_ENV_NAME" ]; then
     echo "EB_ENV_NAME is not set, skipping deployment step"
 else
-  START_TIME=$(date +"%s")
   for env in ${EB_ENV_NAME[@]}; do
+    START_TIME=$(date +"%s")
+    echo "Before deploying, checking if environment is in Ready state"
+    while env_update_in_progress $env "Status" "Ready" $START_TIME
+    do
+      sleep 30
+    done
     aws elasticbeanstalk update-environment --environment-name $env \
         --version-label $VERSION
     if [ -n "$DEPLOY_POLLING" ]; then
+      echo "$env deploy started, streaming EB environment events..."
       sleep 30
-      while env_update_in_progress $env
+      while env_update_in_progress $env "HealthStatus" "Ok" $START_TIME
       do
         ERROR_EVENTS_FROM_START_TIME=$(aws elasticbeanstalk describe-events \
             --environment-name $env --start-time $START_TIME) \
@@ -82,6 +120,7 @@ else
 
         sleep 10
       done
+      echo "$env deploy completed"
     fi
   done
 fi
