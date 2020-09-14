@@ -112,8 +112,8 @@ else
       while env_update_in_progress $env "HealthStatus" "Ok" $START_TIME
       do
         ERROR_EVENTS_FROM_START_TIME=$(aws elasticbeanstalk describe-events \
-            --environment-name $env --start-time $START_TIME) \
-            | jq -r '.Events[] | select( .Severity == "ERROR")'
+            --environment-name $env --start-time $START_TIME \
+            | jq -r '.Events[] | select( .Severity == "ERROR")')
 
         if [[ -n "$ERROR_EVENTS_FROM_START_TIME" ]]; then
           echo $ERROR_EVENTS_FROM_START_TIME
