@@ -20,7 +20,7 @@ aws ecr get-login-password --region $AWS_REGION | docker login \
     --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
 
 # Build and push the image
-docker build -t $NAME:$VERSION .
+docker build "${DOCKER_BUILD_ARGS[@]}" -t $NAME:$VERSION .
 docker tag $NAME:$VERSION $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$NAME:$VERSION
 docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$NAME:$VERSION
 
