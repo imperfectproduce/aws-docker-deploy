@@ -8,7 +8,7 @@ curl -LSso Dockerrun.aws.json.template https://raw.githubusercontent.com/imperfe
 BRANCH=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD | sed 's/[^A-Za-z0-9_\.-]/--/g' | head -c100)
 SHA1=$(git rev-parse --short HEAD)
 VERSION=$BRANCH-$SHA1-$(date +%s)
-DESCRIPTION=$(git log -1 --pretty=%B | iconv -f utf-8 -t ascii)
+DESCRIPTION=$(git log -1 --pretty=%B | iconv -c -f utf-8 -t ascii)
 DESCRIPTION=${DESCRIPTION:0:180} # truncate to 180 chars - max beanstalk version description is 200
 ZIP=$VERSION.zip
 
