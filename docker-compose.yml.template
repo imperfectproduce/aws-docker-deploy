@@ -1,0 +1,6 @@
+version: '3.8'
+services:
+  deliveries-admin:
+    image: "<AWS_ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com/<NAME>:<TAG>"
+    ports:
+      - "<CONTAINER_PORT>"
