@@ -2,7 +2,7 @@
 set -e
 
 # Download template
-curl -LSso Dockerrun.aws.json.template https://raw.githubusercontent.com/imperfectproduce/aws-docker-deploy/c13ffa2eda068d5d4eee93ce498d1340f72a529c/Dockerrun.aws.json.template
+curl -LSso docker-compose.yml.template https://raw.githubusercontent.com/imperfectproduce/aws-docker-deploy/mg/docker-compose/docker-compose.yml.template
 
 # Set vars that typically do not vary by app
 BRANCH=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD | sed 's/[^A-Za-z0-9_\.-]/--/g' | head -c100)
@@ -24,21 +24,21 @@ docker build "${DOCKER_BUILD_ARGS[@]}" -t $NAME:$VERSION .
 docker tag $NAME:$VERSION $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$NAME:$VERSION
 docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$NAME:$VERSION
 
-# Copy template Dockerrun.aws.json and replace template vars
-cp Dockerrun.aws.json.template Dockerrun.aws.json
+# Copy template docker-compose.yml and replace template vars
+cp docker-compose.yml.template docker-compose.yml
 
 # Replace the template values
-sed -i.bak "s/<AWS_ACCOUNT_ID>/$AWS_ACCOUNT_ID/" Dockerrun.aws.json
-sed -i.bak "s/<AWS_REGION>/$AWS_REGION/" Dockerrun.aws.json
-sed -i.bak "s/<NAME>/$NAME/" Dockerrun.aws.json
-sed -i.bak "s/<TAG>/$VERSION/" Dockerrun.aws.json
-sed -i.bak "s/<CONTAINER_PORT>/$CONTAINER_PORT/" Dockerrun.aws.json
+sed -i.bak "s/<AWS_ACCOUNT_ID>/$AWS_ACCOUNT_ID/" docker-compose.yml
+sed -i.bak "s/<AWS_REGION>/$AWS_REGION/" docker-compose.yml
+sed -i.bak "s/<NAME>/$NAME/" docker-compose.yml
+sed -i.bak "s/<TAG>/$VERSION/" docker-compose.yml
+sed -i.bak "s/<CONTAINER_PORT>/$CONTAINER_PORT/" docker-compose.yml
 
 # Zip up the Dockerrun file (feel free to zip up an .ebextensions directory with it)
 if [ -d ".ebextensions" ]; then
-   zip -r $ZIP Dockerrun.aws.json .ebextensions
+   zip -r $ZIP .
 else
-   zip -r $ZIP Dockerrun.aws.json
+   zip -r $ZIP .
 fi
 
 aws s3 cp $ZIP s3://$EB_BUCKET/$ZIP
@@ -129,6 +129,6 @@ fi
 
 # Clean up
 rm $ZIP
-rm Dockerrun.aws.json
-rm Dockerrun.aws.json.bak
-rm Dockerrun.aws.json.template
+rm docker-compose.yml
+rm docker-compose.yml.bak
+rm docker-compose.yml.template
