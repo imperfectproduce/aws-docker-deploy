@@ -35,7 +35,7 @@ sed -i.bak "s/<TAG>/$VERSION/" Dockerrun.aws.json
 sed -i.bak "s/<CONTAINER_PORT>/$CONTAINER_PORT/" Dockerrun.aws.json
 
 # Zip up the Dockerrun file (feel free to zip up an .ebextensions directory with it)
-if [ -d ".ebextensions" ] && [ -d ".plaform" ]; then
+if [ -d ".ebextensions" ] && [ -d ".platform" ]; then
    zip -r $ZIP Dockerrun.aws.json .ebextensions .platform
 elif [ -d ".ebextensions" ]; then
    zip -r $ZIP Dockerrun.aws.json .ebextensions
